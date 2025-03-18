@@ -1,11 +1,11 @@
-# Repo Template
+# NPM Template
 
-![Specs](https://img.shields.io/github/actions/workflow/status/archoleat/repo-template/spec.yaml?label=Specs)
-![Commitlint](https://img.shields.io/github/actions/workflow/status/archoleat/repo-template/commitlint.yaml?label=Commitlint)
-![Editorconfig](https://img.shields.io/github/actions/workflow/status/archoleat/repo-template/editorconfig.yaml?label=Editorconfig)
-![Prettier](https://img.shields.io/github/actions/workflow/status/archoleat/repo-template/prettier.yaml?label=Prettier)
-![ESLint](https://img.shields.io/github/actions/workflow/status/archoleat/repo-template/eslint.yaml?label=ESLint)
-![Remark](https://img.shields.io/github/actions/workflow/status/archoleat/repo-template/remark.yaml?label=Remark)
+![Specs](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/spec.yaml?label=Specs)
+![Commitlint](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/commitlint.yaml?label=Commitlint)
+![Editorconfig](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/editorconfig.yaml?label=Editorconfig)
+![Prettier](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/prettier.yaml?label=Prettier)
+![ESLint](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/eslint.yaml?label=ESLint)
+![Remark](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/remark.yaml?label=Remark)
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@
 - [Contributing](#contributing)
 - [License](#license)
 
-**Archoleat Repo Template** is a template repository designed for quickly
+**Archoleat NPM Template** is a template repository designed for quickly
 starting new projects with pre-configured tools and best development practices.
 
 This template includes ready-made solutions for integration with:
@@ -32,6 +32,7 @@ This template includes ready-made solutions for integration with:
 - **GitHub Actions**.
 - **Semantic Release**.
 - **Bun**.
+- **Rollup**.
 - **Specs**.
 - **EditorConfig**.
 - **ESLint**.
