@@ -1,3 +1,3 @@
-const message = async (string: string) => string;
+const messag = async (string: string) => string;
 
-export { message };
+export { messag };
