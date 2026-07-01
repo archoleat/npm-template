@@ -38,7 +38,7 @@
     "init": "bun i && husky"
   },
   "devDependencies": {
-    "@archoleat/commitlint-define-config": "^1.1.0",
+    "@archoleat/commitlint-define-config": "^1.1.2",
     "@archoleat/prettier-define-config": "^1.1.0",
     "@archoleat/semantic-release-define-config": "^1.2.0",
     "@commitlint/cli": "^20.3.0",
