@@ -45,19 +45,75 @@ This template includes ready-made solutions for integration with:
 
 ## Getting Started
 
-1. **Create a Repository**: Use this template
-   to create a new repository on GitHub.
+Install Bun and Git. Local release builds also need Node.js; the release
+workflow installs the latest Node.js LTS.
 
-   > Since this is a **Public Template** you can click the button
-   > **Use this template** for a faster and more convenient cloning.
+Create a repository with **Use this template**, then replace `YOUR_OWNER` and
+`YOUR_REPOSITORY` below with its names:
 
-1. **Clone the Repository**: Clone your new repository to your local machine.
+```shell
+git clone git@github.com:YOUR_OWNER/YOUR_REPOSITORY.git my-package
 
-1. **Start Development**: Develop your project,
-   making changes according to your project's needs.
+cd my-package
 
-1. **Configure GitHub Actions**: Modify GitHub Actions
-   settings to fit your requirements.
+bun run init
+```
+
+`init` installs dependencies and enables Husky hooks. This template builds an
+ES module and its TypeScript declarations; it has no application server.
+
+Before configuring publication:
+
+- Set an available package name and your own `author`, `repository`, `bugs`,
+  `homepage`, and `keywords` in [`package.json`](package.json).
+  For a scoped package, make sure your npm account can publish to that scope.
+
+- Replace the example export in [`src/index.ts`](src/index.ts) and its tests in
+  [`specs/message.spec.ts`](specs/message.spec.ts).
+
+- If you change entry points or output names, update
+  [`rollup.config.ts`](rollup.config.ts) and the `exports`, `types`, and `files`
+  fields in `package.json` together.
+
+- Update the maintainer files listed under
+  [Change of Maintainer](#change-of-maintainer), including README badges.
+
+Run the tests, type check, and build:
+
+```shell
+bun test
+bun tsc --noEmit
+bun rollup -c
+```
+
+The build writes `index.js` and `index.d.ts`. Check the publishable file list
+before releasing:
+
+```shell
+npm pack --dry-run
+```
+
+Keep automated publication disabled until the package metadata and credentials
+are ready. The current [`release.yaml`](.github/workflows/release.yaml) reads
+these repository Actions secrets:
+
+| Secret | Purpose |
+| --- | --- |
+| `ARCHOLEATER_APP_ID` | Client ID of your publishing GitHub App. |
+| `ARCHOLEATER_APP_PRIVATE_KEY` | Private key of that App. |
+| `NPM_PUBLISH_TOKEN` | npm token with publishing access to your package. |
+
+Install your GitHub App on the new repository. Keep these secret names or update
+the corresponding references in `release.yaml`. Check the App's repository
+permissions and the branch/tag rules for its publishing identity.
+
+[`release.config.js`](release.config.js) configures releases from `main` using
+Conventional Commits. `feat` produces a minor release and `fix` a patch release;
+`docs`, `ci`, and `chore` do not produce releases by themselves. Review this
+configuration and the Release triggers before enabling publication.
+
+Enable Pull requests and auto-merge if you keep the automatic PR and Dependabot
+merge workflows. Review required check names against the existing jobs.
 
 ## Features
 
@@ -168,11 +224,11 @@ The following files use the names **Archoleat** and **nikkeyl** by default:
 - [`config.yml`](.github/config.yml).
 - [`release.yaml`](.github/workflows/release.yaml).
 
-Before using this template, replace this names with your
+Before using this template, replace these names with your
 name, name of your team or the name of your organization.
 
-> \[!CAUTION]
-> Don't forget to change your license!
+> [!CAUTION]
+> Review `LICENSE` and copyright notices before publishing your project.
 
 ## Contributing
 
