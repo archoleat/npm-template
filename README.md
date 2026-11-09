@@ -1,55 +1,13 @@
 # NPM Template
 
-![Specs](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/spec.yaml?label=Specs)
-![Commitlint](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/commitlint.yaml?label=Commitlint)
-![Editorconfig](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/editorconfig.yaml?label=Editorconfig)
-![Prettier](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/prettier.yaml?label=Prettier)
-![ESLint](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/eslint.yaml?label=ESLint)
-![Remark](https://img.shields.io/github/actions/workflow/status/archoleat/npm-template/remark.yaml?label=Remark)
-![Zero Deps](https://img.shields.io/badge/zero_dependencies-blue)
+A TypeScript package starter that builds an ES module and declaration files
+with Rollup. Tests run with Bun; semantic-release handles versions and
+publication from Conventional Commits after the configured checks pass.
 
-## Table of Contents
+## Getting started
 
-- [Getting Started](#getting-started)
-- [Features](#features)
-- [Scripts](#scripts)
-- [Workflows](#workflows)
-- [Change of Maintainer](#change-of-maintainer)
-- [Contributing](#contributing)
-- [License](#license)
-
-**Archoleat NPM Template** is a template repository designed for quickly
-starting new projects with pre-configured tools and best development practices.
-
-This template includes ready-made solutions for integration with:
-
-- **Git**.
-- **GitHub**.
-- **Commitlint**.
-- **Conventional Commits**.
-- **Husky**.
-- **Pre Commit Hook**.
-- **Lint Staged**.
-- **GitHub Actions**.
-- **Semantic Release**.
-- **Bun**.
-- **Rollup**.
-- **Specs**.
-- **EditorConfig**.
-- **ESLint**.
-- **Remark**.
-- **Prettier**.
-- **TypeScript**.
-- **Dependabot**.
-- **Welcome Bot**.
-
-## Getting Started
-
-Install Bun and Git. Local release builds also need Node.js; the release
-workflow installs the latest Node.js LTS.
-
-Create a repository with **Use this template**, then replace `YOUR_OWNER` and
-`YOUR_REPOSITORY` below with its names:
+Create a repository with **Use this template** and install Bun, Git and
+Node.js LTS. Replace the placeholders below:
 
 ```shell
 git clone git@github.com:YOUR_OWNER/YOUR_REPOSITORY.git my-package
@@ -59,182 +17,77 @@ cd my-package
 bun run init
 ```
 
-`init` installs dependencies and enables Husky hooks. This template builds an
-ES module and its TypeScript declarations; it has no application server.
+`init` installs dependencies and enables Husky hooks. This is a library
+starter, so there is no application server.
 
-Before configuring publication:
+## Configuration
 
-- Set an available package name and your own `author`, `repository`, `bugs`,
-  `homepage`, and `keywords` in [`package.json`](package.json).
-  For a scoped package, make sure your npm account can publish to that scope.
+| Setting | Where to change it |
+| --- | --- |
+| Package identity | [package.json](package.json). |
+| Public API | [src/index.ts](src/index.ts). |
+| Example test | [message.spec.ts](specs/message.spec.ts). |
+| Build outputs | [rollup.config.ts](rollup.config.ts). |
+| Release policy | [release.config.js](release.config.js). |
+| Maintainers | [CODEOWNERS](.github/CODEOWNERS) and README badges. |
 
-- Replace the example export in [`src/index.ts`](src/index.ts) and its tests in
-  [`specs/message.spec.ts`](specs/message.spec.ts).
+Choose an available package name and update the author, repository URLs and
+keywords. When changing entry points, keep Rollup outputs and the package's
+`exports`, `types` and `files` fields in sync.
 
-- If you change entry points or output names, update
-  [`rollup.config.ts`](rollup.config.ts) and the `exports`, `types`, and `files`
-  fields in `package.json` together.
+> [!CAUTION]
+> Review the license and retain required copyright notices when reusing the
+> template. Keep publication disabled until package ownership and credentials
+> are configured.
 
-- Update the maintainer files listed under
-  [Change of Maintainer](#change-of-maintainer), including README badges.
-
-Run the tests, type check, and build:
+## Development checks
 
 ```shell
 bun test
 bun tsc --noEmit
 bun rollup -c
-```
+bun eslint 'src/**/*.ts'
+bun prettier . --check
+bun remark . --quiet --frail
 
-The build writes `index.js` and `index.d.ts`. Check the publishable file list
-before releasing:
-
-```shell
 npm pack --dry-run
 ```
 
-Keep automated publication disabled until the package metadata and credentials
-are ready. The current [`release.yaml`](.github/workflows/release.yaml) reads
-these repository Actions secrets:
+The build writes `index.js` and `index.d.ts`. Inspect the dry-run file list
+before publishing. ESLint reads [`eslint.config.js`](eslint.config.js);
+[`.remarkignore`](.remarkignore) applies to Markdown checks only.
 
-| Secret | Purpose |
+Hooks and CI run the checks configured in this repository; they do not
+replace API design or code review. The existing
+[`stale.yaml`](.github/workflows/stale.yaml) marks eligible issues and pull
+requests stale after **90 inactive days**. Exempt labels and closure behavior
+are configured in that workflow.
+
+## Publication
+
+The original `archoleat/npm-template` repository is excluded by the guard in
+[`release.yaml`](.github/workflows/release.yaml). Review this guard and the
+workflow before enabling publication in a repository created from the template.
+
+| Actions secret | Purpose |
 | --- | --- |
 | `ARCHOLEATER_APP_ID` | Client ID of your publishing GitHub App. |
-| `ARCHOLEATER_APP_PRIVATE_KEY` | Private key of that App. |
-| `NPM_PUBLISH_TOKEN` | npm token with publishing access to your package. |
+| `ARCHOLEATER_APP_PRIVATE_KEY` | App private key. |
+| `NPM_PUBLISH_TOKEN` | npm token allowed to publish your package. |
 
-Install your GitHub App on the new repository. Keep these secret names or update
-the corresponding references in `release.yaml`. Check the App's repository
-permissions and the branch/tag rules for its publishing identity.
+Keep these names or update their references in the workflow. Configure App
+permissions and branch rules for the publishing identity. Pull requests and
+auto-merge must be enabled if you keep the Dependabot auto-merge workflow.
 
-[`release.config.js`](release.config.js) configures releases from `main` using
-Conventional Commits. `feat` produces a minor release and `fix` a patch release;
-`docs`, `ci`, and `chore` do not produce releases by themselves. Review this
-configuration and the Release triggers before enabling publication.
-
-Enable Pull requests and auto-merge if you keep the automatic PR and Dependabot
-merge workflows. Review required check names against the existing jobs.
-
-## Features
-
-- **Flexibility**: Easily customizable template to adapt
-  to different project types.
-
-- **Git and GitHub Integration**: Pre-configured `.gitignore`
-  and `.gitattributes` for efficient work with Git and GitHub.
-
-  - **Conventional Commits & Commitlint**: If you don't want
-    to think about how to write a commit every time,
-    these plugins will help you.
-
-    > It will be especially useful for teams that
-    > have an ongoing debate about writing commits.
-
-  - **Husky, Lint Staged & Pre Commit**: Won't let you submit
-    bad code to the repository!
-
-- **Continuous Integration (CI)**: Built-in CI support using GitHub Actions
-  for automatic linting, testing and building of your code with each change.
-
-  > Also suitable for private repositories! GitHub Actions use
-  > **cache**, **timeout-minutes**, **paths** and **workflow run**
-  > to reduce the execution time, which means it will significantly
-  > reduce your costs!
-
-  - **Linters**: Help you maintain a consistent code writing style
-    and find errors.
-
-  - **Specs**: Automated testing will help you focus on
-    writing better code!
-
-  - **Semantic Release**: For those who are tired of writing changelogs
-    and thinking about what the next version number will be.
-
-    > If you have **Branch and Tag Protection** rules configured,
-    > please read this [article](https://gonzalohirsch.com/blog/semantic-release-and-branch-protection-rules).
-
-- **TypeScript**: Pre-configured **TypeScript** setup
-  for improved reliability and development convenience.
-
-- **Bots**:
-
-  - **Dependabot**: No more wasting time updating dependencies!
-  - **Welcome Bot**: A probot app that welcome new users.
-
-## Scripts
-
-- `init`: Installs dependencies and **Husky**.
-
-## Workflows
-
-- [`auto-merge-dependabot-pull-request.yaml`](.github/workflows/auto-merge-dependabot-pull-request.yaml):
-  Automatically merges dependabot **Pull Requests** to the **main** branch.
-
-- [`commitlint.yaml`](.github/workflows/commitlint.yaml):
-  Checks the commit message according
-  to the **Conventional Commits** standard.
-
-- [`create-pull-request.yaml`](.github/workflows/create-pull-request.yaml):
-  Automatically creates a **Pull Request**
-  when pushing a branch to the repository.
-
-- [`editorconfig.yaml`](.github/workflows/editorconfig.yaml):
-  Checks all files with **Editorconfig Checker**.
-
-  > All ignore files [`.editorconfig-checker.json`](.editorconfig-checker.json).
-
-- [`eslint.yaml`](.github/workflows/eslint.yaml):
-  Checks all **TypeScript** files with **ESLint**.
-
-  > All ignore files [`.remarkignore`](.remarkignore).
-
-- [`pre-commit.yaml`](.github/workflows/pre-commit.yaml):
-  Runs a check on the contents of the **Pull Request** before merging.
-
-- [`prettier.yaml`](.github/workflows/prettier.yaml):
-  Checks all files with **Prettier**.
-
-  > All ignore files [`.prettierignore`](.prettierignore).
-
-- [`release.yaml`](.github/workflows/release.yaml): Creates release.
-
-- [`remark.yaml`](.github/workflows/remark.yaml):
-  Checks all **Markdown** files with **Remark**.
-
-- [`semantic-pull-request-title.yaml`](.github/workflows/semantic-pull-request-title.yaml):
-  Validates the **Pull Request** title
-  against the **conventional commits** standard.
-
-- [`spec.yaml`](.github/workflows/spec.yaml):
-  Tests all **TypeScript** files with **Bun**.
-
-- [`stale.yaml`](.github/workflows/stale.yaml):
-  Removes **Issues** and **Pull Requests** that have not been active
-  for more than **60 days**.
-
-## Change of Maintainer
-
-The following files use the names **Archoleat** and **nikkeyl** by default:
-
-- [`CODEOWNERS`](.github/CODEOWNERS).
-- [`LICENSE`](LICENSE).
-- [`CHANGELOG.md`](CHANGELOG.md).
-- [`package.json`](package.json).
-- [`README.md`](README.md).
-- [`config.yml`](.github/config.yml).
-- [`release.yaml`](.github/workflows/release.yaml).
-
-Before using this template, replace these names with your
-name, name of your team or the name of your organization.
-
-> [!CAUTION]
-> Review `LICENSE` and copyright notices before publishing your project.
+Release runs after a successful `Spec` push check on the current `main`
+revision, repeats quality checks and builds the package before publication.
+The supplied configuration maps `feat` to a minor release and `fix` to a patch;
+`docs`, `ci` and `chore` alone do not publish a version.
 
 ## Contributing
 
-Please read [**CONTRIBUTING**](https://github.com/archoleat/.github/blob/main/CONTRIBUTING.md)
-to start contributing.
+See the [contribution guide](https://github.com/archoleat/.github/blob/main/CONTRIBUTING.md).
 
 ## License
 
-This project is licensed under the [**MIT license**](LICENSE).
+[MIT](LICENSE).
